@@ -33,10 +33,15 @@ func processArticle(doc *goquery.Document, responsetype int) (string, error) {
 		return "", nil
 	}
 
-	// preprocess. Remove all tags that are not useful and can make parsing wrong
-	cleanDocument(doc.Selection)
+	// get clone of a selection. Clone is neede,d because we willdo some transformations
 
-	selection := getPrimarySelection(doc.Selection)
+	docselection := doc.Selection.Clone()
+
+	// preprocess. Remove all tags that are not useful and can make parsing wrong
+	cleanDocument(docselection)
+
+	// get a selection that contains a text of a page (only primary or article text)
+	selection := getPrimarySelection(docselection)
 
 	if responsetype == 2 {
 		// return parent node path and attributes
