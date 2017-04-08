@@ -27,28 +27,40 @@ func init() {
 
 // the function prepares a document for analysing
 // cleans a DOM object and starts analysing
-func processArticle(doc *goquery.Document, responsetype int) (string, error) {
-
-	if doc == nil {
-		return "", nil
-	}
-
+func processArticle(doc *goquery.Document) *goquery.Selection {
 	// get clone of a selection. Clone is neede,d because we willdo some transformations
-
 	docselection := doc.Selection.Clone()
 
 	// preprocess. Remove all tags that are not useful and can make parsing wrong
 	cleanDocument(docselection)
 
 	// get a selection that contains a text of a page (only primary or article text)
-	selection := getPrimarySelection(docselection)
+	return getPrimarySelection(docselection)
+}
 
-	if responsetype == 2 {
-		// return parent node path and attributes
-		return getSelectionSignature(selection), nil
+func processArticleToHtml(doc *goquery.Document) (string, error) {
+	if doc == nil {
+		return "", nil
 	}
 
-	return getTextFromHtml(selection), nil
+	return processArticle(doc).Html()
+}
+
+// return parent node path and attributes
+func processArticleToSignature(doc *goquery.Document) (string, error) {
+	if doc == nil {
+		return "", nil
+	}
+
+	return getSelectionSignature(processArticle(doc)), nil
+}
+
+func processArticleToText(doc *goquery.Document) (string, error) {
+	if doc == nil {
+		return "", nil
+	}
+
+	return getTextFromHtml(processArticle(doc)), nil
 }
 
 // clean HTML document. Removes all tags that are not useful
