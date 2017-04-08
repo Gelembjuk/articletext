@@ -39,7 +39,7 @@ func GetArticleTextFromUrl(url string) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 1)
+	return processArticleToText(doc)
 }
 
 // extracts useful text from a html document presented as a Reader object
@@ -52,7 +52,7 @@ func GetArticleText(input io.Reader) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 1)
+	return processArticleToText(doc)
 }
 
 // extracts useful text from a html file
@@ -78,7 +78,7 @@ func GetArticleSignatureFromUrl(url string) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 2)
+	return processArticleToSignature(doc)
 }
 
 // extracts useful text from a html document presented as a Reader object
@@ -91,7 +91,7 @@ func GetArticleSignature(input io.Reader) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 2)
+	return processArticleToSignature(doc)
 }
 
 // extracts useful text from a html file
