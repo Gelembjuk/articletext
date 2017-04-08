@@ -38,6 +38,14 @@ func processArticle(doc *goquery.Document) *goquery.Selection {
 	return getPrimarySelection(docselection)
 }
 
+func processArticleToHtml(doc *goquery.Document) (string, error) {
+	if doc == nil {
+		return "", nil
+	}
+
+	return processArticle(doc).Html()
+}
+
 // return parent node path and attributes
 func processArticleToSignature(doc *goquery.Document) (string, error) {
 	if doc == nil {
