@@ -15,6 +15,7 @@ import (
 	"os"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/jaytaylor/html2text"
 )
 
 // extracts useful text from a html file
@@ -31,7 +32,7 @@ func GetArticleTextFromFile(filepath string) (string, error) {
 }
 
 // extracts useful text from a html page presented by an url
-func GetArticleTextFromUrl(url string) (string, error) {
+func GetArticleTextFromUrl(url string, options ...html2text.Options) (string, error) {
 	doc, err := goquery.NewDocument(url)
 
 	if err != nil {
@@ -39,11 +40,11 @@ func GetArticleTextFromUrl(url string) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 1)
+	return processArticle(doc, 1, options...)
 }
 
 // extracts useful text from a html document presented as a Reader object
-func GetArticleText(input io.Reader) (string, error) {
+func GetArticleText(input io.Reader, options ...html2text.Options) (string, error) {
 
 	doc, err := goquery.NewDocumentFromReader(input)
 
@@ -52,7 +53,7 @@ func GetArticleText(input io.Reader) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 1)
+	return processArticle(doc, 1, options...)
 }
 
 // extracts useful text from a html file
@@ -70,7 +71,7 @@ func GetArticleSignatureFromFile(filepath string) (string, error) {
 }
 
 // extracts useful text from a html page presented by an url
-func GetArticleSignatureFromUrl(url string) (string, error) {
+func GetArticleSignatureFromUrl(url string, options ...html2text.Options) (string, error) {
 	doc, err := goquery.NewDocument(url)
 
 	if err != nil {
@@ -78,11 +79,11 @@ func GetArticleSignatureFromUrl(url string) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 2)
+	return processArticle(doc, 2, options...)
 }
 
 // extracts useful text from a html document presented as a Reader object
-func GetArticleSignature(input io.Reader) (string, error) {
+func GetArticleSignature(input io.Reader, options ...html2text.Options) (string, error) {
 
 	doc, err := goquery.NewDocumentFromReader(input)
 
@@ -91,7 +92,7 @@ func GetArticleSignature(input io.Reader) (string, error) {
 		return "", err
 	}
 
-	return processArticle(doc, 2)
+	return processArticle(doc, 2, options...)
 }
 
 // extracts useful text from a html file

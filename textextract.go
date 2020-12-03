@@ -15,6 +15,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/jaytaylor/html2text"
 	"gopkg.in/neurosnap/sentences.v1"
 	"gopkg.in/neurosnap/sentences.v1/data"
 )
@@ -214,13 +215,13 @@ func describeDocumentNode(s *goquery.Selection) *goquery.Selection {
 /*
 *
  */
-func describeSentences(s *goquery.Selection) TextDescription {
+func describeSentences(s *goquery.Selection, options ...html2text.Options) TextDescription {
 	var d TextDescription
 
 	var text string
 	// get text of this node and then split for sentences
 	if s.Children().Length() > 0 {
-		text = getTextFromHtml(s)
+		text = getTextFromHtml(s, options...)
 	} else {
 		text = s.Text()
 	}

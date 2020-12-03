@@ -4,17 +4,18 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/jaytaylor/html2text"
 )
 
 /*
 Extract text by DOM path, aka jquery style
 */
-func getTextByPathFromDocument(doc *goquery.Document, path string) (string, error) {
+func getTextByPathFromDocument(doc *goquery.Document, path string, options ...html2text.Options) (string, error) {
 	sel := doc.Find(path)
 
 	if sel != nil {
 
-		return getTextFromHtml(sel), nil
+		return getTextFromHtml(sel, options...), nil
 	}
 
 	return "nothing", nil
