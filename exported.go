@@ -1,10 +1,10 @@
 package articletext
 
 /*
-The function extracts article text from a HTML page
+The package is used extracts article text from a HTML page
 It drops all additional elements from a html page (navigation, advertizing etc)
 
-This file contains exported functiosn of a package
+This file contains exported functiosn of a package. It is entry point of the package
 
 Author: Roman Gelembjuk <roman@gelembjuk.com>
 */
@@ -130,4 +130,10 @@ func GetArticleTextByPath(input io.Reader, path string) (string, error) {
 	}
 
 	return getTextByPathFromDocument(doc, path)
+}
+
+// the functions finds a path (selector, signature) for each url and returns one that was found most often
+func GetOptimalArticleSignatureByUrls(urls []string) (string, error) {
+
+	return getOptimalArticleSignatureByUrls(urls)
 }

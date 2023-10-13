@@ -1,7 +1,7 @@
 package articletext
 
 /*
-The function finds a DOM node containing majority of a text
+The file contains a logic of a package to find a DOM node containing majority of a text
 in HTML document
 
 Author: Roman Gelembjuk <roman@gelembjuk.com>

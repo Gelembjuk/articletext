@@ -1,7 +1,7 @@
 package articletext
 
 /*
-The function extracts article text from a HTML page
+The package is used to extracts article text from a HTML page
 It drops all additional elements from a html page (navigation, advertizing etc)
 
 This file containes internal functions and a logic
