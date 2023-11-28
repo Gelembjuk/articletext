@@ -27,7 +27,7 @@ func init() {
 
 // the function prepares a document for analysing
 // cleans a DOM object and starts analysing
-func processArticle(doc *goquery.Document, responsetype int) (string, error) {
+func processArticle(doc *goquery.Document, responsetype int, options ...html2text.Options) (string, error) {
 
 	if doc == nil {
 		return "", nil
@@ -48,7 +48,7 @@ func processArticle(doc *goquery.Document, responsetype int) (string, error) {
 		return getSelectionSignature(selection), nil
 	}
 
-	return getTextFromHtml(selection), nil
+	return getTextFromHtml(selection, options...), nil
 }
 
 // clean HTML document. Removes all tags that are not useful
@@ -78,11 +78,11 @@ func cleanDocument(s *goquery.Selection) *goquery.Selection {
 
 // convert HTML to text from a DOM node
 // we ignore errors in this function
-func getTextFromHtml(s *goquery.Selection) string {
+func getTextFromHtml(s *goquery.Selection, options ...html2text.Options) string {
 	// gethtml from a node
 	html, _ := s.Html()
 	// convert to text
-	text, err := html2text.FromString(html)
+	text, err := html2text.FromString(html, options...)
 
 	if err != nil {
 		return ""
