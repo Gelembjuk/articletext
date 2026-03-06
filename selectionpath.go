@@ -1,6 +1,7 @@
 package articletext
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -12,12 +13,12 @@ Extract text by DOM path, aka jquery style
 func getTextByPathFromDocument(doc *goquery.Document, path string) (string, error) {
 	sel := doc.Find(path)
 
-	if sel != nil {
+	if sel != nil && sel.Length() > 0 {
 
 		return getTextFromHtml(sel), nil
 	}
 
-	return "nothing", nil
+	return "", errors.New("nothing found by path")
 }
 
 // this function returns some specific signature of a selection

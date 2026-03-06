@@ -94,10 +94,6 @@ func getTextFromHtml(s *goquery.Selection) string {
 // check if aword (string) is in an array of tags
 // we have list of tags to ignore some not useful tags
 func checkTagsToSkip(tag string) bool {
-	for _, v := range skiphtmltags {
-		if v == tag {
-			return true
-		}
-	}
-	return false
+	i := sort.SearchStrings(skiphtmltags, tag)
+	return i < len(skiphtmltags) && skiphtmltags[i] == tag
 }

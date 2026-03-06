@@ -9,6 +9,10 @@ Extracts only useful contents of a document, text of a central element.
 
 go get github.com/gelembjuk/articletext
 
+### Requirements
+
+Go 1.24+
+
 ### Manual
 
 There are 3 types of exported functions.

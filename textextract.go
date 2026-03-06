@@ -78,7 +78,6 @@ func findSelectionWithPrimaryText(s *goquery.Selection) *goquery.Selection {
 
 	// all subnodes lengths
 	tlengths := []int{}
-	densityes := []int{}
 
 	s.Children().Each(func(i int, sec *goquery.Selection) {
 		totalcountofcorrectsentences := getNumbericAttribute(sec, "totalcountofcorrectsentences")
@@ -94,19 +93,12 @@ func findSelectionWithPrimaryText(s *goquery.Selection) *goquery.Selection {
 		// node text length
 		tlen := utf8.RuneCountInString(sec.Text())
 
-		html, _ := sec.Html()
-		hlen := utf8.RuneCountInString(html)
-
 		if tlen == 0 {
 			// process next subnode
 			return
 		}
 
 		tlengths = append(tlengths, tlen)
-
-		density := (hlen / tlen)
-
-		densityes = append(densityes, density)
 
 		// check if this block is better then previous
 		// choose better block only if previous is empty or
@@ -286,7 +278,7 @@ func getMeanDeviation(list []int) float64 {
 	}
 
 	// calculate arithmetic mean
-	avg := float64(sum / len(list))
+	avg := float64(sum) / float64(len(list))
 
 	number1 := 0.0
 

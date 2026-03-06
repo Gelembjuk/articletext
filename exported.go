@@ -10,8 +10,9 @@ Author: Roman Gelembjuk <roman@gelembjuk.com>
 */
 
 import (
+	"fmt"
 	"io"
-	"log"
+	"net/http"
 	"os"
 
 	"github.com/PuerkitoBio/goquery"
@@ -23,19 +24,18 @@ func GetArticleTextFromFile(filepath string) (string, error) {
 	reader, err := os.Open(filepath)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
+	defer reader.Close()
 
 	return GetArticleText(reader)
 }
 
 // extracts useful text from a html page presented by an url
 func GetArticleTextFromUrl(url string) (string, error) {
-	doc, err := goquery.NewDocument(url)
+	doc, err := newDocumentFromURL(url)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -48,7 +48,6 @@ func GetArticleText(input io.Reader) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(input)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -62,19 +61,18 @@ func GetArticleSignatureFromFile(filepath string) (string, error) {
 	reader, err := os.Open(filepath)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
+	defer reader.Close()
 
 	return GetArticleSignature(reader)
 }
 
 // extracts useful text from a html page presented by an url
 func GetArticleSignatureFromUrl(url string) (string, error) {
-	doc, err := goquery.NewDocument(url)
+	doc, err := newDocumentFromURL(url)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -87,7 +85,6 @@ func GetArticleSignature(input io.Reader) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(input)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -100,19 +97,18 @@ func GetArticleTextFromFileByPath(filepath string, path string) (string, error) 
 	reader, err := os.Open(filepath)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
+	defer reader.Close()
 
 	return GetArticleTextByPath(reader, path)
 }
 
 // extracts useful text from a html page presented by an url
 func GetArticleTextFromUrlByPath(url string, path string) (string, error) {
-	doc, err := goquery.NewDocument(url)
+	doc, err := newDocumentFromURL(url)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -125,7 +121,6 @@ func GetArticleTextByPath(input io.Reader, path string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(input)
 
 	if err != nil {
-		log.Fatal(err)
 		return "", err
 	}
 
@@ -136,4 +131,18 @@ func GetArticleTextByPath(input io.Reader, path string) (string, error) {
 func GetOptimalArticleSignatureByUrls(urls []string) (string, error) {
 
 	return getOptimalArticleSignatureByUrls(urls)
+}
+
+func newDocumentFromURL(url string) (*goquery.Document, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		return nil, fmt.Errorf("unexpected HTTP status %d for %s", resp.StatusCode, url)
+	}
+
+	return goquery.NewDocumentFromReader(resp.Body)
 }
